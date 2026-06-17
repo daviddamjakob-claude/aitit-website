@@ -52,6 +52,13 @@
       letter-spacing: 0.08em;
       text-transform: lowercase;
       color: var(--white);
+      display: flex;
+      align-items: center;
+    }
+    .logo img {
+      height: 28px;
+      width: auto;
+      display: block;
     }
     .logo-dot {
       display: inline-block;
@@ -60,6 +67,12 @@
       background: var(--accent);
       margin-left: 7px;
       vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .footer-logo img {
+      height: 20px;
+      width: auto;
+      display: block;
     }
     .nav-btn {
       font-family: 'Space Grotesk', sans-serif;
@@ -289,7 +302,7 @@
   </section>
 
   <footer class="footer">
-    <span class="footer-text">all it takes is training</span>
+    <span class="footer-text footer-logo" id="footer-logo">all it takes is training</span>
     <span class="footer-text">© 2026</span>
   </footer>
 
@@ -325,6 +338,33 @@
       }
 
       loadOffers().catch(err => console.error('Contentful fetch failed:', err));
+
+      async function loadLogos() {
+        const res  = await fetch(`https://cdn.contentful.com/spaces/${SPACE}/entries?content_type=siteSettings&include=1&access_token=${TOKEN}`);
+        const data = await res.json();
+        if (!data.items || !data.items.length) return;
+
+        const fields  = data.items[0].fields;
+        const assets  = (data.includes && data.includes.Asset) || [];
+        const assetMap = {};
+        assets.forEach(a => { assetMap[a.sys.id] = 'https:' + a.fields.file.url; });
+
+        if (fields.headerLogo) {
+          const url = assetMap[fields.headerLogo.sys.id];
+          if (url) {
+            const nav = document.querySelector('.logo');
+            nav.innerHTML = `<img src="${url}" alt="all it takes is training"><span class="logo-dot"></span>`;
+          }
+        }
+        if (fields.footerLogo) {
+          const url = assetMap[fields.footerLogo.sys.id];
+          if (url) {
+            document.getElementById('footer-logo').innerHTML = `<img src="${url}" alt="all it takes is training">`;
+          }
+        }
+      }
+
+      loadLogos().catch(err => console.error('Logo fetch failed:', err));
     })();
 
     (function () {
