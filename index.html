@@ -341,11 +341,11 @@
       loadOffers().catch(err => console.error('Contentful fetch failed:', err));
 
       async function loadLogos() {
-        const res  = await fetch(`https://cdn.contentful.com/spaces/${SPACE}/entries/${LOGOS_ENTRY}?include=1&access_token=${TOKEN}`);
+        const res  = await fetch(`https://cdn.contentful.com/spaces/${SPACE}/entries?sys.id=${LOGOS_ENTRY}&include=1&access_token=${TOKEN}`);
         const data = await res.json();
-        if (!data.fields) return;
+        if (!data.items || !data.items.length) return;
 
-        const fields   = data.fields;
+        const fields   = data.items[0].fields;
         const assets   = (data.includes && data.includes.Asset) || [];
         const assetMap = {};
         assets.forEach(a => { assetMap[a.sys.id] = 'https:' + a.fields.file.url; });
