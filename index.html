@@ -110,11 +110,13 @@
       margin-bottom: 10px;
     }
     .s1-hero-link { text-decoration: none; }
-    .s1-hero-link:hover {
-      text-decoration: underline;
-      text-underline-offset: 8px;
-      text-decoration-color: var(--accent);
-      text-decoration-thickness: 2px;
+    @media (hover: hover) {
+      .s1-hero-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 8px;
+        text-decoration-color: var(--accent);
+        text-decoration-thickness: 2px;
+      }
     }
     .s1-line-last {
       font-family: 'Syne', sans-serif;
