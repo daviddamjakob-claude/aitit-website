@@ -42,7 +42,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 80px;
+      padding: 20px max(80px, calc((100vw - 1280px) / 2 + 80px));
       border-bottom: 0.5px solid var(--border);
     }
     .logo {
@@ -80,7 +80,7 @@
 
     /* ── SECTION 1 — HERO ── */
     .s1 {
-      padding: 72px 80px;
+      padding: 72px max(80px, calc((100vw - 1280px) / 2 + 80px));
       min-height: 80vh;
       display: flex;
       flex-direction: column;
@@ -108,7 +108,7 @@
 
     /* ── SECTION 2 — DISCIPLINES + PRICING ── */
     .s2 {
-      padding: 72px 80px;
+      padding: 72px max(80px, calc((100vw - 1280px) / 2 + 80px));
       border-bottom: 0.5px solid var(--border);
     }
     .s2-label {
@@ -224,7 +224,7 @@
 
     /* ── FOOTER ── */
     .footer {
-      padding: 20px 80px;
+      padding: 20px max(80px, calc((100vw - 1280px) / 2 + 80px));
       border-top: 0.5px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -249,6 +249,9 @@
       .s1     { padding: 52px 24px; }
       .s2     { padding: 52px 24px; }
       .footer { padding: 14px 24px; }
+    }
+    @media (min-width: 1440px) {
+      .offer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
   </style>
 </head>
