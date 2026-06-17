@@ -15,9 +15,9 @@
       --surface-1:   #0F1A16;
       --surface-2:   #121F18;
       --surface-3:   #0A1510;
-      --surface-1h:  #162820;
-      --surface-2h:  #1A2E22;
-      --surface-3h:  #122018;
+      --surface-1h:  #1E3D2C;
+      --surface-2h:  #224535;
+      --surface-3h:  #193325;
       --border:      #141A18;
       --border-card: #1E2E28;
       --muted-1:     #3A6655;
@@ -114,7 +114,7 @@
     .s2-label {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 18px;
-      font-weight: 400;
+      font-weight: 700;
       color: var(--muted-1);
       margin-bottom: 16px;
     }
@@ -189,7 +189,8 @@
     .offer-bullet {
       font-family: 'Space Grotesk', sans-serif;
       font-size: clamp(12px, 1.3vw, 14px);
-      color: var(--mid);
+      color: var(--hero-4);
+      font-weight: 500;
       line-height: 1.65;
       padding: 6px 0;
       border-bottom: 0.5px solid var(--border-card);
@@ -198,8 +199,7 @@
     }
     .offer-bullet:last-child { border-bottom: none; }
     .offer-bullet--price {
-      color: var(--hero-4);
-      font-weight: 500;
+      color: var(--accent);
     }
     .dash {
       color: var(--accent-dim);
@@ -267,10 +267,10 @@
     <span class="s1-line" style="font-size:clamp(16px,2.3vw,21px);color:#2E4A3E;">Getting there is a journey.</span>
     <span class="s1-line" style="font-size:clamp(20px,3.0vw,27px);color:#3A6655;">Every race has a finish line.</span>
     <span class="s1-line" style="font-size:clamp(25px,3.9vw,35px);color:#6A9A82;">Winners endure the pain.</span>
-    <span class="s1-line-last" style="font-size:clamp(36px,7vw,64px);color:#FFFFFF;">All it takes is training.</span>
+    <a href="#s2" class="s1-line-last" style="font-size:clamp(36px,7vw,64px);color:#FFFFFF;text-decoration:none;">All it takes is training.</a>
   </section>
 
-  <section class="s2">
+  <section class="s2" id="s2">
     <div class="s2-label">Giving you the tooling you want for your next</div>
     <div class="s2-rule"></div>
     <div class="s2-typed-wrap">
