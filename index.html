@@ -285,45 +285,7 @@
       <span class="cursor"></span>
     </div>
 
-    <div class="offer-grid">
-
-      <div class="offer offer-1">
-        <div class="offer-name">Self Service Tooling</div>
-        <div class="offer-bullets">
-          <div class="offer-bullet offer-bullet--price"><span class="dash">—</span>€159 per 60min call · 20% discount for 3+ calls</div>
-          <div class="offer-bullet"><span class="dash">—</span>One-on-one video call, used as per your needs. Works best for specific questions around race selection, training plan optimisation, race strategy &amp; event admin.</div>
-          <div class="offer-bullet"><span class="dash">—</span>Possible to do live benchmarking with proprietary race data analytics.</div>
-        </div>
-        <button class="offer-cta">schedule 60min video call</button>
-      </div>
-
-      <div class="offer offer-2">
-        <div class="offer-name">Race Readiness Tooling</div>
-        <div class="offer-bullets">
-          <div class="offer-bullet offer-bullet--price"><span class="dash">—</span>€249/month · min. 3 months</div>
-          <div class="offer-bullet"><span class="dash">—</span>Personal coaching with min. 5 one-on-one calls.</div>
-          <div class="offer-bullet"><span class="dash">—</span>Rolling 4-week training plan based on What It Takes performance approach with monthly revisions.</div>
-          <div class="offer-bullet"><span class="dash">—</span>Initial diagnostic based on proprietary race data analytics.</div>
-          <div class="offer-bullet"><span class="dash">—</span>Optional: recommendation for nutrition &amp; supplement strategy.</div>
-        </div>
-        <button class="offer-cta">schedule get-to-know call (free)</button>
-      </div>
-
-      <div class="offer offer-3">
-        <div class="offer-name">Performance Tooling</div>
-        <div class="offer-bullets">
-          <div class="offer-bullet offer-bullet--price"><span class="dash">—</span>€499/mo weekly · €399/mo bi-weekly · limited slots</div>
-          <div class="offer-bullet"><span class="dash">—</span>Personal coaching with weekly or bi-weekly one-on-one calls.</div>
-          <div class="offer-bullet"><span class="dash">—</span>Weekly training plans based on What It Takes performance approach.</div>
-          <div class="offer-bullet"><span class="dash">—</span>Custom training &amp; progress dashboard.</div>
-          <div class="offer-bullet"><span class="dash">—</span>Access to proprietary race data analytics.</div>
-          <div class="offer-bullet"><span class="dash">—</span>Anytime Q&amp;A as per your needs (WhatsApp, email).</div>
-          <div class="offer-bullet"><span class="dash">—</span>Limited slots — check availability in free get-to-know call.</div>
-        </div>
-        <button class="offer-cta">schedule get-to-know call (free)</button>
-      </div>
-
-    </div>
+    <div class="offer-grid" id="offer-grid"></div>
   </section>
 
   <footer class="footer">
@@ -332,6 +294,39 @@
   </footer>
 
   <script>
+    (function () {
+      const SPACE  = '9znjatyadlyr';
+      const TOKEN  = 'V_HbgQqB8xCNo7NdczEKvYnrgB_0AVhDr2uJwLadMdA';
+      const API    = `https://cdn.contentful.com/spaces/${SPACE}/entries?content_type=offer&order=fields.order&access_token=${TOKEN}`;
+
+      async function loadOffers() {
+        const res  = await fetch(API);
+        const data = await res.json();
+        const grid = document.getElementById('offer-grid');
+
+        grid.innerHTML = data.items.map((item, i) => {
+          const { heading, bullets, ctaLabel } = item.fields;
+          const list = Array.isArray(bullets)
+            ? bullets
+            : String(bullets).split('\n').filter(Boolean);
+
+          const bulletsHtml = list.map((b, bi) =>
+            `<div class="offer-bullet${bi === 0 ? ' offer-bullet--price' : ''}">` +
+            `<span class="dash">—</span>${b}</div>`
+          ).join('');
+
+          return `
+            <div class="offer offer-${i + 1}">
+              <div class="offer-name">${heading}</div>
+              <div class="offer-bullets">${bulletsHtml}</div>
+              <button class="offer-cta">${ctaLabel}</button>
+            </div>`;
+        }).join('');
+      }
+
+      loadOffers().catch(err => console.error('Contentful fetch failed:', err));
+    })();
+
     (function () {
       const words = ['IronMan.', 'Marathon.', 'Hyrox.'];
       let wi = 0, ci = 0, deleting = false, pause = 0;
