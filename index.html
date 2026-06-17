@@ -310,7 +310,8 @@
     (function () {
       const SPACE  = '9znjatyadlyr';
       const TOKEN  = 'V_HbgQqB8xCNo7NdczEKvYnrgB_0AVhDr2uJwLadMdA';
-      const API    = `https://cdn.contentful.com/spaces/${SPACE}/entries?content_type=offer&order=fields.order&access_token=${TOKEN}`;
+      const API        = `https://cdn.contentful.com/spaces/${SPACE}/entries?content_type=offer&order=fields.order&access_token=${TOKEN}`;
+      const LOGOS_ENTRY = '5DmqGLkU6rkbwCHVYXW0r3';
 
       async function loadOffers() {
         const res  = await fetch(API);
@@ -340,11 +341,11 @@
       loadOffers().catch(err => console.error('Contentful fetch failed:', err));
 
       async function loadLogos() {
-        const res  = await fetch(`https://cdn.contentful.com/spaces/${SPACE}/entries?content_type=siteSettings&include=1&access_token=${TOKEN}`);
+        const res  = await fetch(`https://cdn.contentful.com/spaces/${SPACE}/entries/${LOGOS_ENTRY}?include=1&access_token=${TOKEN}`);
         const data = await res.json();
-        if (!data.items || !data.items.length) return;
+        if (!data.fields) return;
 
-        const fields  = data.items[0].fields;
+        const fields  = data.fields;
         const assets  = (data.includes && data.includes.Asset) || [];
         const assetMap = {};
         assets.forEach(a => { assetMap[a.sys.id] = 'https:' + a.fields.file.url; });
