@@ -74,6 +74,11 @@
       width: auto;
       display: block;
     }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
     .nav-btn {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 12px;
@@ -85,6 +90,8 @@
       border-radius: 2px;
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      display: inline-block;
     }
     .nav-btn:hover {
       background: var(--accent);
@@ -281,7 +288,10 @@
 
   <nav class="nav">
     <span class="logo"></span>
-    <button class="nav-btn">get in touch</button>
+    <div class="nav-right">
+      <a href="https://daviddamjakob-claude.github.io/aitit-training-OS/" class="nav-btn" target="_blank" rel="noopener">training os</a>
+      <button class="nav-btn">get in touch</button>
+    </div>
   </nav>
 
   <section class="s1">
