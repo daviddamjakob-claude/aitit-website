@@ -362,43 +362,7 @@
   </section>
 
   <footer class="footer">
-    <div class="footer-grid">
-
-      <div class="footer-col">
-        <div class="footer-col-title">Hyrox Training</div>
-        <ul class="footer-col-links">
-          <li><a href="https://daviddamjakob-claude.github.io/aitit-website/aitit-hyrox-race-readiness-formula.pdf" target="_blank" rel="noopener">The Hyrox Race Readiness Formula</a></li>
-          <li><a href="#">Hyrox PB with 3 sessions per week</a></li>
-          <li><a href="#">Hyrox PB with 5 sessions per week</a></li>
-          <li><a href="#">Hyrox PB with 8 sessions per week</a></li>
-          <li><a href="#">Hyrox PB with 10 sessions per week</a></li>
-          <li><a href="#">5 Run Interval Drills for your next Hyrox PB</a></li>
-          <li><a href="#">5 Hybrid Interval Drills for your next Hyrox PB</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <div class="footer-col-title">Marathon &amp; Triathlon Training</div>
-        <ul class="footer-col-links">
-          <li><a href="#">Coming soon</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <div class="footer-col-title">Races</div>
-        <ul class="footer-col-links">
-          <li><a href="#">Coming soon</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <div class="footer-col-title">Health &amp; Nutrition</div>
-        <ul class="footer-col-links">
-          <li><a href="#">Coming soon</a></li>
-        </ul>
-      </div>
-
-    </div>
+    <div class="footer-grid" id="footer-grid"></div>
     <div class="footer-bottom">
       <span class="footer-text">© 2026</span>
     </div>
@@ -464,6 +428,38 @@
       }
 
       loadLogos().catch(err => console.error('Logo fetch failed:', err));
+
+      async function loadFooter() {
+        const res  = await fetch(`https://cdn.contentful.com/spaces/${SPACE}/entries?content_type=footerColumn&order=fields.order&include=2&access_token=${TOKEN}`);
+        const data = await res.json();
+        const grid = document.getElementById('footer-grid');
+        if (!grid || !data.items) return;
+
+        const assetMap = {};
+        ((data.includes && data.includes.Asset) || []).forEach(a => {
+          assetMap[a.sys.id] = 'https:' + a.fields.file.url;
+        });
+        const entryMap = {};
+        ((data.includes && data.includes.Entry) || []).forEach(e => {
+          entryMap[e.sys.id] = e.fields;
+        });
+
+        grid.innerHTML = data.items.map(col => {
+          const links = (col.fields.links || []).map(ref => {
+            const f = entryMap[ref.sys.id];
+            if (!f) return '';
+            const href = f.document ? assetMap[f.document.sys.id] : (f.url || '#');
+            const target = f.document ? ' target="_blank" rel="noopener"' : '';
+            return `<li><a href="${href}"${target}>${f.label}</a></li>`;
+          }).join('');
+          return `<div class="footer-col">
+            <div class="footer-col-title">${col.fields.title}</div>
+            <ul class="footer-col-links">${links}</ul>
+          </div>`;
+        }).join('');
+      }
+
+      loadFooter().catch(err => console.error('Footer fetch failed:', err));
     })();
 
     (function () {
